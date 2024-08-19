@@ -1,12 +1,24 @@
 // src/redux/uiReducer.js
 
-import { TOGGLE_SIDEBAR, SET_LARGE_SCREEN, INCREMENT_CART, SET_CART_COUNT, TOGGLE_CART_POPUP } from './uiActions';
+import {
+  TOGGLE_SIDEBAR,
+  SET_LARGE_SCREEN,
+  INCREMENT_CART,
+  SET_CART_COUNT,
+  TOGGLE_CART_POPUP,
+  ADD_TO_CART,
+  REMOVE_FROM_CART,
+  SET_CART_ITEMS, // Import the new action
+} from './uiActions';
+
+import Cookies from 'js-cookie';
 
 const initialState = {
   isSidebarOpen: true,
   isLargeScreen: window.innerWidth >= 1024,
   cartCount: 0,
-  isCartPopupVisible: false, // New state for cart pop-up visibility
+  isCartPopupVisible: false,
+  cartItems: [], // State for cart items
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -35,6 +47,24 @@ const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         isCartPopupVisible: !state.isCartPopupVisible,
+      };
+    case ADD_TO_CART:
+      return {
+        ...state,
+        cartItems: [...state.cartItems, action.payload], // Add new item to cart
+      };
+    case REMOVE_FROM_CART:
+      const updatedCartItems = state.cartItems.filter((_, i) => i !== action.payload);
+      Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 7 });
+      return {
+        ...state,
+        cartItems: updatedCartItems,
+        cartCount: state.cartCount - 1,
+      };
+    case SET_CART_ITEMS:
+      return {
+        ...state,
+        cartItems: action.payload, // Set cart items from loaded cookies
       };
     default:
       return state;
