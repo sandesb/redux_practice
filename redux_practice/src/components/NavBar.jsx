@@ -2,16 +2,18 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Bell, User, Menu, ShoppingCart } from 'lucide-react';
-import { toggleSidebar, toggleCartPopup, loadCourses } from '../redux/uiActions'; // Import loadCourses
+import { toggleSidebar, toggleCartPopup, loadCourses, loadCartData } from '../redux/uiActions';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import reduxLogo from '../assets/redux.png';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const cartCount = useSelector((state) => state.ui.cartCount);
 
   useEffect(() => {
-    dispatch(loadCourses()); // Load courses when Navbar mounts
+    dispatch(loadCourses());
+    dispatch(loadCartData()); // Ensure cart data is loaded on mount
   }, [dispatch]);
 
   const handleToggle = () => {
@@ -24,29 +26,18 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center p-4 bg-primary from-gray-100 to-gray-200 w-full">
-      <div className="text-xl font-bold text-gray-700 pl-6">⚛ Redux</div>
-      
-      <button
-        onClick={handleToggle}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-lg flex items-center space-x-2"
-      >
-        <Menu className="w-5 h-5" />
-      </button>
-      
-      <div className="flex space-x-4">
-        <input
-          type="text"
-          placeholder="Type In..."
-          className="px-4 py-2 border rounded-md bg-gray-50 shadow-inner focus:outline-none focus:ring focus:border-blue-300"
-        />
-
-        <button className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-lg flex items-center space-x-2">
-          <Search className="w-5 h-5" />
-          <span>Search</span>
-        </button>
+      <div className="flex items-center space-x-4">
+        <Link to="/" className="flex items-center text-xl font-bold text-gray-700 pl-6 pr-10">
+          <img src={reduxLogo} alt="Redux Logo" className="w-8 h-8 mr-2" /> React+Redux
+        </Link>
+        <div className='flex space-x-4 '>
+          <button onClick={handleToggle} className="p-2 text-gray-700 rounded-md flex items-center">
+            <Menu className="w-5 h-5" />
+          </button>
+          <SearchBar />
+        </div>
       </div>
-      
-      {/* Icons */}
+
       <div className="flex items-center space-x-4 pr-4">
         <div className="relative" onClick={handleCartClick}>
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 shadow">

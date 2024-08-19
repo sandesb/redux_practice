@@ -1,5 +1,5 @@
 // src/redux/uiActions.js
-
+import Cookies from "js-cookie";
 export const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 export const SET_LARGE_SCREEN = 'SET_LARGE_SCREEN';
 export const INCREMENT_CART = 'INCREMENT_CART';
@@ -10,6 +10,7 @@ export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const SET_CART_ITEMS = 'SET_CART_ITEMS'; // New action
 export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
 export const LOAD_COURSES = 'LOAD_COURSES';
+export const LOAD_CART_DATA = 'LOAD_CART_DATA';
 
 
 
@@ -78,6 +79,17 @@ export const loadCourses = () => {
     } catch (error) {
       console.error('Error loading courses:', error);
     }
+  };
+};
+
+export const loadCartData = () => {
+  return (dispatch) => {
+    const savedCartItems = Cookies.get('cartItems');
+    const cartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
+    const cartCount = cartItems.length;
+
+    dispatch(setCartItems(cartItems));
+    dispatch(setCartCount(cartCount));
   };
 };
 

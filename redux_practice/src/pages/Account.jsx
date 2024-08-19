@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react';
+// src/pages/Account.js
+import React from 'react';
 import Card from '../components/Card';
-const Account = () => {
-  const [courses, setCourses] = useState([]);
+import useCourse from '../hooks/useCourse';
+import useCart from '../hooks/useCart';
+import LoadingSpinner from '../components/LoadingSpinner'; // Import the reusable loading spinner
 
-  useEffect(() => {
-    fetch('src/data/db.json')
-      .then((response) => response.json())
-      .then((data) => {
-        const filteredCourses = data.courses.filter(course => course.id >= 6 && course.id <= 9);
-        setCourses(filteredCourses);
-      })
-      .catch((error) => console.error('Error fetching the courses:', error));
-  }, []);
+const Account = () => {
+  const { handlePlusClick } = useCart();
+
+  const filterFn = (course) => course.id >= 6 && course.id <= 9;
+  const { courses, loading, error } = useCourse(filterFn);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">My Classes</h1>
+      <h1 className="text-2xl font-medium mb-6 text-gray-700">My Account</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
           <Card
@@ -24,6 +30,7 @@ const Account = () => {
             progress={course.progress}
             icon={course.icon}
             bgColor={course.bgColor}
+            onPlusClick={handlePlusClick}
           />
         ))}
       </div>

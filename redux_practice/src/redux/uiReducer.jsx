@@ -11,6 +11,7 @@ import {
   SET_CART_ITEMS, // Import the new action
   SET_SEARCH_RESULTS,
   LOAD_COURSES,
+  LOAD_CART_DATA,
 } from './uiActions';
 
 import Cookies from 'js-cookie';
@@ -27,6 +28,12 @@ const initialState = {
 
 const uiReducer = (state = initialState, action) => {
   switch (action.type) {
+    case LOAD_CART_DATA:
+      return {
+        ...state,
+        cartItems: action.payload.cartItems,
+        cartCount: action.payload.cartItems.length,
+      };
     case TOGGLE_SIDEBAR:
       return {
         ...state,
@@ -57,14 +64,20 @@ const uiReducer = (state = initialState, action) => {
         ...state,
         cartItems: [...state.cartItems, action.payload], // Add new item to cart
       };
-    case REMOVE_FROM_CART:
-      const updatedCartItems = state.cartItems.filter((_, i) => i !== action.payload);
-      Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 7 });
-      return {
-        ...state,
-        cartItems: updatedCartItems,
-        cartCount: state.cartCount - 1,
-      };
+      case SET_CART_ITEMS:
+        return {
+          ...state,
+          cartItems: action.payload,
+          cartCount: action.payload.length,
+        };
+        case REMOVE_FROM_CART:
+          const updatedCartItems = state.cartItems.filter((_, i) => i !== action.payload);
+          Cookies.set('cartItems', JSON.stringify(updatedCartItems), { expires: 7 });
+          return {
+            ...state,
+            cartItems: updatedCartItems,
+            cartCount: updatedCartItems.length, // Update cartCount based on updated cartItems
+          };
     case SET_CART_ITEMS:
       return {
         ...state,

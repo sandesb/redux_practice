@@ -7,21 +7,44 @@ const Card = ({ title, progress, icon, bgColor, onPlusClick }) => {
     onPlusClick({ title, icon });
   };
 
+  // Initialize current and total values to 0
+  let current = 0, total = 0;
+
+  if (typeof progress === 'string') {
+    // Safely parse the progress string
+    const parts = progress.split(' h / ');
+    if (parts.length === 2) {
+      current = parseFloat(parts[0]) || 0;
+      total = parseFloat(parts[1]) || 0;
+    }
+  } else if (progress && typeof progress.current === 'number' && typeof progress.total === 'number') {
+    current = progress.current;
+    total = progress.total;
+  }
+
+  // Calculate the progress width
+  const progressWidth = total > 0 ? `${(current / total) * 100}%` : '0%';
+
   return (
-    <div className={`bg-gradient-to-r ${bgColor} p-6 rounded-xl shadow-md relative`}>
+    <div className="relative p-4 rounded-xl shadow-lg bg-gradient-to-br from-[#E0F2FF] via-[#EAF3F8] to-[#F6F7FB]">
       <div className="flex justify-between items-start">
-        <span className="text-3xl">{icon}</span>
+        <span className="text-3xl text-teal-600">{icon}</span>
         <button
           onClick={handleAddToCart}
-          className="text-gray-500 hover:text-gray-700"
+          className="text-gray-400 hover:text-gray-600"
         >
           <Plus className="w-6 h-6" />
         </button>
       </div>
-      <h2 className="text-lg font-semibold mt-4">{title}</h2>
-      <div className="mt-2 text-sm text-gray-700">{progress}</div>
+      <h2 className="text-lg font-semibold mt-4 text-gray-800">{title}</h2>
+      <div className="mt-2 text-sm text-gray-600">
+        {`${current} h / ${total} h`}
+      </div>
       <div className="w-full h-2 bg-gray-200 rounded-full mt-4">
-        <div className="h-full bg-gray-700 rounded-full" style={{ width: '98%' }}></div>
+        <div
+          className="h-full bg-gradient-to-r from-blue-200 to-blue-400 rounded-full"
+          style={{ width: progressWidth }}
+        ></div>
       </div>
     </div>
   );
