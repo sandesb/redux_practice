@@ -12,7 +12,7 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center p-4 bg-primary from-gray-100 to-gray-200 w-full">
-      <div className="text-xl font-bold text-gray-700 pl-6">⚛ Redux</div>
+      <div className="text-xl font-bold text-gray-700 pl-6 ">⚛ Redux</div>
       
       <button
         onClick={handleToggle}
