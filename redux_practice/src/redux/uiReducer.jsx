@@ -9,6 +9,8 @@ import {
   ADD_TO_CART,
   REMOVE_FROM_CART,
   SET_CART_ITEMS, // Import the new action
+  SET_SEARCH_RESULTS,
+  LOAD_COURSES,
 } from './uiActions';
 
 import Cookies from 'js-cookie';
@@ -19,6 +21,8 @@ const initialState = {
   cartCount: 0,
   isCartPopupVisible: false,
   cartItems: [], // State for cart items
+  courses: [], // This should be populated with the data from db.json
+  searchResults: [], // To store search results
 };
 
 const uiReducer = (state = initialState, action) => {
@@ -65,6 +69,16 @@ const uiReducer = (state = initialState, action) => {
       return {
         ...state,
         cartItems: action.payload, // Set cart items from loaded cookies
+      };
+      case LOAD_COURSES:
+      return {
+        ...state,
+        courses: action.payload, // Load courses into state
+      };
+      case SET_SEARCH_RESULTS:
+      return {
+        ...state,
+        searchResults: action.payload,
       };
     default:
       return state;
