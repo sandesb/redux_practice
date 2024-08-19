@@ -24,24 +24,26 @@ const Navbar = () => {
 
   return (
     <div className="flex justify-between items-center p-4 bg-primary from-gray-100 to-gray-200 w-full">
-      {/* Adjusted Container for Logo, Menu Button, and Search Bar */}
-      <div className="flex items-center space-x-4">
-        {/* Logo and Link to HomePage */}
-        <Link to="/" className="flex items-center text-xl font-bold text-gray-700 pl-4">
-          <span className="pr-2">⚛</span> Redux
-        </Link>
-        <div className='flex space-x-4 pl-32'>
-        {/* Menu Button */}
-        <button
-          onClick={handleToggle}
-          className="p-2 text-gray-700 rounded-md flex items-center"
-        >
-          <Menu className="w-5 h-5" />
-        </button>
+      <div className="text-xl font-bold text-gray-700 pl-6">⚛ Redux</div>
+      
+      <button
+        onClick={handleToggle}
+        className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-lg flex items-center space-x-2"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+      
+      <div className="flex space-x-4">
+        <input
+          type="text"
+          placeholder="Type In..."
+          className="px-4 py-2 border rounded-md bg-gray-50 shadow-inner focus:outline-none focus:ring focus:border-blue-300"
+        />
 
-        {/* Search Bar */}
-        <SearchBar />
-        </div>
+        <button className="px-4 py-2 bg-blue-500 text-white rounded-md shadow-lg flex items-center space-x-2">
+          <Search className="w-5 h-5" />
+          <span>Search</span>
+        </button>
       </div>
       
       {/* Icons */}
