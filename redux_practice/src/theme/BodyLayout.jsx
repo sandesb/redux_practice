@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Sidebar from './Sidebar';
 import Navbar from '../components/NavBar';
 import { setLargeScreen } from '../redux/uiActions';
-
+import CartPopup from '../components/CartPopUp';
 const BodyLayout = () => {
   const dispatch = useDispatch();
   const isSidebarOpen = useSelector((state) => state.ui.isSidebarOpen);
@@ -24,6 +24,7 @@ const BodyLayout = () => {
   return (
     <div className="bg-primary-bg min-h-screen grid grid-rows-[auto,1fr]">
       <Navbar />
+      <CartPopup/>
       <div className={`grid ${isSidebarOpen && isLargeScreen ? 'grid-cols-[auto,1fr]' : 'grid-cols-1'}`}>
         {isSidebarOpen && isLargeScreen && (
           <div className="w-64">

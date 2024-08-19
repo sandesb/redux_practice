@@ -1,13 +1,19 @@
+// src/components/Navbar.js
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { Bell, Search, User, Menu, X } from 'lucide-react';
-import { toggleSidebar } from '../redux/uiActions';
+import { useDispatch, useSelector } from 'react-redux';
+import { Bell, Search, User, Menu, ShoppingCart } from 'lucide-react';
+import { toggleSidebar, toggleCartPopup } from '../redux/uiActions';
 
 const Navbar = () => {
   const dispatch = useDispatch();
+  const cartCount = useSelector((state) => state.ui.cartCount);
 
   const handleToggle = () => {
     dispatch(toggleSidebar());
+  };
+
+  const handleCartClick = () => {
+    dispatch(toggleCartPopup());
   };
 
   return (
@@ -35,11 +41,11 @@ const Navbar = () => {
       </div>
       
       <div className="flex items-center space-x-4 pr-4">
-        <div className="relative">
+        <div className="relative" onClick={handleCartClick}>
           <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2 py-0.5 shadow">
-            3
+            {cartCount}
           </span>
-          <Bell className="w-6 h-6 text-gray-600" />
+          <ShoppingCart className="w-6 h-6 text-gray-600" />
         </div>
         <User className="w-8 h-8 text-gray-600" />
       </div>
